@@ -4,7 +4,7 @@ from datetime import datetime
 from hashlib import sha1
 import requests
 from requests.exceptions import RequestException
-from . import domains, rsemail, aliases
+from . import domains, rsemail, aliases, customers
 
 
 class RackspaceAppsError(Exception):
@@ -15,7 +15,7 @@ class RackspaceApps:
 
     API_SCHEME = 'https'
     API_NETLOC = 'api.emailsrvr.com'
-    API_VERSION = 'v1'
+    API_VERSION = 'v2'
     USER_AGENT = 'rackspaceapps Python API client'
 
     def __init__(self, user_key='', secret_key='', account_number=''):
@@ -41,6 +41,9 @@ class RackspaceApps:
         self.add_alias = aliases.add_alias(self)
         self.edit_alias = aliases.edit_alias(self)
         self.delete_alias = aliases.delete_alias(self)
+
+        self.list_invoices = customers.list_invoices(self)
+        self.invoice_lines = customers.invoice_lines(self)
 
     def build_resource(self, resource):
         if not isinstance(resource, (list, tuple)):
